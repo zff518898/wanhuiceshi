@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>挽回可能性测试 - 你还有机会挽回他吗？</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary: #4A90E2;
+            --secondary: #7B68EE;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #50C878;
+            --warning: #FFA500;
+            --highlight: #FF6B6B;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.15);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .progress-container {
+            padding: 20px 30px 0;
+            background-color: rgba(255,255,255,0.9);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .question-container {
+            padding: 40px 30px;
+            display: block;
+        }
+        
+        .result-container {
+            padding: 40px 30px;
+            display: none;
+        }
+        
+        .question {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            color: var(--dark);
+            line-height: 1.5;
+            text-align: center;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .option {
+            padding: 18px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(74, 144, 226, 0.05);
+        }
+        
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: #e9ecef;
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .option.selected .option-letter {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-prev {
+            background-color: #f8f9fa;
+            color: var(--dark);
+            border: 2px solid #dee2e6;
+        }
+        
+        .btn-prev:hover {
+            background-color: #e9ecef;
+        }
+        
+        .btn-next {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+        }
+        
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+        }
+        
+        .btn-restart {
+            background: linear-gradient(90deg, var(--warning) 0%, #ff9500 100%);
+            color: white;
+            margin-top: 30px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
+        }
+        
+        .btn-restart:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 165, 0, 0.4);
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .result-title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .match-percentage {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 20px 0;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-type {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .result-desc {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #495057;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .predictions {
+            background-color: rgba(74, 144, 226, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .predictions h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .predictions h3 i {
+            margin-right: 10px;
+        }
+        
+        .prediction-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .prediction-item i {
+            color: var(--success);
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .recovery-steps {
+            background-color: rgba(123, 104, 238, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .recovery-steps h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recovery-steps h3 i {
+            margin-right: 10px;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            counter-increment: step-counter;
+        }
+        
+        .step-item::before {
+            content: counter(step-counter);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .timeline {
+            background-color: rgba(255, 107, 107, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .timeline h3 {
+            color: var(--highlight);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .timeline h3 i {
+            margin-right: 10px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-item i {
+            color: var(--highlight);
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .share-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .share-title {
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-size: 1.2rem;
+        }
+        
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .share-whatsapp {
+            background-color: #25D366;
+            color: white;
+        }
+        
+        .share-wechat {
+            background-color: #09BB07;
+            color: white;
+        }
+        
+        .share-copy {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .share-btn i {
+            margin-right: 8px;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+            border-top: 1px solid #e9ecef;
+            margin-top: 30px;
+        }
+        
+        .heart {
+            color: var(--primary);
+            animation: heartbeat 1.5s ease infinite;
+            display: inline-block;
+        }
+        
+        .recovery-icon {
+            color: var(--success);
+            font-size: 2rem;
+            margin: 0 5px;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .important-note {
+            background-color: rgba(255, 165, 0, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .question { font-size: 1.2rem; }
+            .option { padding: 15px; }
+            .match-percentage { font-size: 4rem; }
+            .result-title { font-size: 1.8rem; }
+            .result-type { font-size: 1.5rem; }
+            button { padding: 12px 20px; }
+        }
+        
+        @media (max-width: 480px) {
+            .container { border-radius: 15px; }
+            .header { padding: 20px 15px; }
+            .question-container, .result-container { padding: 25px 20px; }
+            .match-percentage { font-size: 3.5rem; }
+            .share-buttons { flex-direction: column; }
+            .share-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>挽回可能性测试</h1>
+            <div class="subtitle">你还有机会挽回他吗？测一测，并知道该怎么做</div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span>挽回可能性分析</span>
+                <span id="progressText">0/10</span>
+            </div>
+        </div>
+        
+        <!-- 测试问题部分 -->
+        <div class="question-container" id="questionContainer">
+            <div class="question" id="questionText"></div>
+            <div class="options" id="optionsContainer"></div>
+            <div class="buttons">
+                <button class="btn-prev" id="prevBtn">
+                    <i class="fas fa-arrow-left"></i> 上一题
+                </button>
+                <button class="btn-next" id="nextBtn">
+                    下一题 <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 测试结果部分 -->
+        <div class="result-container" id="resultContainer">
+            <div class="result-header">
+                <div class="result-title">测试结果</div>
+                <div class="match-percentage" id="matchPercentage">75%</div>
+                <div class="result-type" id="resultType">高挽回机会型</div>
+            </div>
+            
+            <div class="result-desc" id="resultDesc">
+                根据你的回答分析，你们的关系有很大挽回空间！分手原因更多是外部因素或暂时矛盾，彼此之间仍然存在深厚的情感基础。只要方法得当，成功挽回的可能性非常高。
+            </div>
+            
+            <div class="predictions">
+                <h3><i class="fas fa-crystal-ball"></i> 挽回前景预测</h3>
+                <div id="predictionsList">
+                    <div class="prediction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>在未来1-2个月内，你们有很高的重新联系机会</div>
+                    </div>
+                    <div class="prediction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>TA可能会主动回忆你们之间的美好时光</div>
+                    </div>
+                    <div class="prediction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>通过恰当的行动，关系有很大机会恢复到亲密状态</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recovery-steps">
+                <h3><i class="fas fa-road"></i> 挽回行动步骤</h3>
+                <div id="stepsList">
+                    <div class="step-item">
+                        <div>先给自己和对方1-2周的冷静期，让情绪平复</div>
+                    </div>
+                    <div class="step-item">
+                        <div>通过共同朋友或社交媒体了解TA的近况，但不要直接联系</div>
+                    </div>
+                    <div class="step-item">
+                        <div>在冷静期后，发送一条简短、友好的问候信息</div>
+                    </div>
+                    <div class="step-item">
+                        <div>如果TA回应积极，可以约一次轻松的非正式见面</div>
+                    </div>
+                    <div class="step-item">
+                        <div>见面时展示你的积极改变，但不要急于谈论复合</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline">
+                <h3><i class="fas fa-clock"></i> 挽回时间线建议</h3>
+                <div id="timelineList">
+                    <div class="timeline-item">
+                        <i class="fas fa-calendar-week"></i>
+                        <div><strong>第1-2周：</strong>自我调整期 - 专注于个人成长和情绪管理</div>
+                    </div>
+                    <div class="timeline-item">
+                        <i class="fas fa-calendar-week"></i>
+                        <div><strong>第3-4周：</strong>重新建立联系 - 通过轻松话题开始互动</div>
+                    </div>
+                    <div class="timeline-item">
+                        <i class="fas fa-calendar-week"></i>
+                        <div><strong>第5-8周：</strong>关系修复期 - 逐步增加互动频率和质量</div>
+                    </div>
+                    <div class="timeline-item">
+                        <i class="fas fa-calendar-week"></i>
+                        <div><strong>第9-12周：</strong>关系重建期 - 考虑表达复合意愿或重新确立关系</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="important-note">
+                <strong><i class="fas fa-exclamation-circle"></i> 重要提示：</strong> 
+                挽回需要耐心和正确的方法。请尊重对方的感受和边界，不要过度纠缠。如果过程中遇到困难，可以考虑寻求专业情感咨询师的帮助。
+            </div>
+            
+            <button class="btn-restart" id="restartBtn">
+                <i class="fas fa-redo"></i> 重新测试
+            </button>
+            
+            <div class="share-section">
+                <div class="share-title">分享给朋友，一起分析挽回可能性！</div>
+                <div class="share-buttons">
+                    <a class="share-btn share-whatsapp" id="shareWhatsApp">
+                        <i class="fab fa-whatsapp"></i> 心鸟心理服务
+                    </a>
+                    <a class="share-btn share-wechat" id="shareWeChat">
+                        <i class="fab fa-weixin"></i> 微信
+                    </a>
+                    <a class="share-btn share-copy" id="copyLink">
+                        <i class="fas fa-copy"></i> 复制链接
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>本测试基于情感修复心理学与关系重建研究设计，仅供娱乐参考</p>
+            <p>专业情感挽回指导由 <span style="color: var(--secondary); font-weight: bold;">心鸟心理服务</span> 提供 <span class="heart">❤</span></p>
+        </div>
+    </div>
+
+    <script>
+        // 测试数据 - 挽回可能性测试（10题）
+        const questions = [
+            {
+                text: "你们分手的主要原因是什么？",
+                options: [
+                    { text: "外部压力（如家庭、工作等）", score: 9 },
+                    { text: "沟通问题或小矛盾积累", score: 8 },
+                    { text: "双方都有责任，但感情基础还在", score: 7 },
+                    { text: "一方出轨或重大背叛", score: 4 }
+                ]
+            },
+            {
+                text: "分手后，你们还有联系吗？",
+                options: [
+                    { text: "偶尔联系，像朋友一样", score: 9 },
+                    { text: "很少联系，但有共同朋友传递消息", score: 7 },
+                    { text: "完全断联，但社交媒体还能看到动态", score: 6 },
+                    { text: "完全断绝所有联系", score: 5 }
+                ]
+            },
+            {
+                text: "分手后，TA对你的态度如何？",
+                options: [
+                    { text: "仍然友好，会关心我的近况", score: 9 },
+                    { text: "保持礼貌，但保持距离", score: 7 },
+                    { text: "态度冷淡，避免接触", score: 5 },
+                    { text: "有明显反感或回避", score: 4 }
+                ]
+            },
+            {
+                text: "你们在一起的时间有多长？",
+                options: [
+                    { text: "超过2年，有深厚的感情基础", score: 9 },
+                    { text: "1-2年，建立了稳定的感情", score: 8 },
+                    { text: "6个月-1年，有一定感情积累", score: 7 },
+                    { text: "不到6个月", score: 6 }
+                ]
+            },
+            {
+                text: "分手后，你是否进行了自我反思和改变？",
+                options: [
+                    { text: "深刻反思，已经开始积极改变", score: 10 },
+                    { text: "正在反思，计划做出改变", score: 8 },
+                    { text: "有反思，但不知道如何改变", score: 6 },
+                    { text: "还没开始反思", score: 5 }
+                ]
+            },
+            {
+                text: "TA是否有新的恋爱对象？",
+                options: [
+                    { text: "没有，还是单身", score: 9 },
+                    { text: "不清楚，但应该没有", score: 7 },
+                    { text: "可能有暧昧对象，但没正式恋爱", score: 6 },
+                    { text: "已经有新恋情", score: 4 }
+                ]
+            },
+            {
+                text: "你们分手时的情绪激烈程度？",
+                options: [
+                    { text: "和平分手，没有大吵大闹", score: 9 },
+                    { text: "有争执但很快冷静", score: 8 },
+                    { text: "激烈争吵，情绪激动", score: 5 },
+                    { text: "非常激烈，互相伤害", score: 4 }
+                ]
+            },
+            {
+                text: "你们是否有共同的朋友圈或社交圈？",
+                options: [
+                    { text: "有很多共同朋友，社交圈高度重合", score: 9 },
+                    { text: "有一些共同朋友，但圈子不完全相同", score: 7 },
+                    { text: "很少共同朋友，社交圈基本分开", score: 6 },
+                    { text: "完全没有共同朋友", score: 5 }
+                ]
+            },
+            {
+                text: "分手后，你是否明确表达了挽回意愿？",
+                options: [
+                    { text: "没有，给彼此空间冷静", score: 8 },
+                    { text: "轻微暗示，但没有直接说", score: 7 },
+                    { text: "表达过，但TA反应一般", score: 6 },
+                    { text: "多次强烈表达，可能造成压力", score: 4 }
+                ]
+            },
+            {
+                text: "你认为你们之间最大的吸引力是什么？",
+                options: [
+                    { text: "深厚的感情基础和美好回忆", score: 10 },
+                    { text: "性格互补，彼此需要", score: 9 },
+                    { text: "共同的兴趣和目标", score: 8 },
+                    { text: "不太清楚，感觉已经淡了", score: 5 }
+                ]
+            }
+        ];
+
+        // 结果类型数据 - 挽回可能性测试
+        const resultTypes = [
+            {
+                minScore: 70,
+                maxScore: 100,
+                name: "高挽回机会型",
+                desc: "根据你的回答分析，你们的关系有很大挽回空间！分手原因更多是外部因素或暂时矛盾，彼此之间仍然存在深厚的情感基础。只要方法得当，成功挽回的可能性非常高。",
+                predictions: [
+                    "在未来1-2个月内，你们有很高的重新联系机会",
+                    "TA可能会主动回忆你们之间的美好时光",
+                    "通过恰当的行动，关系有很大机会恢复到亲密状态"
+                ],
+                steps: [
+                    "先给自己和对方1-2周的冷静期，让情绪平复",
+                    "通过共同朋友或社交媒体了解TA的近况，但不要直接联系",
+                    "在冷静期后，发送一条简短、友好的问候信息",
+                    "如果TA回应积极，可以约一次轻松的非正式见面",
+                    "见面时展示你的积极改变，但不要急于谈论复合"
+                ],
+                timeline: [
+                    "第1-2周：自我调整期 - 专注于个人成长和情绪管理",
+                    "第3-4周：重新建立联系 - 通过轻松话题开始互动",
+                    "第5-8周：关系修复期 - 逐步增加互动频率和质量",
+                    "第9-12周：关系重建期 - 考虑表达复合意愿或重新确立关系"
+                ]
+            },
+            {
+                minScore: 50,
+                maxScore: 69,
+                name: "中等挽回机会型",
+                desc: "你们的关系有一定挽回机会，但需要更多时间和耐心。分手可能是由于双方的矛盾积累，感情基础仍在但需要修复。正确的挽回策略和真诚的改变是关键。",
+                predictions: [
+                    "需要2-3个月的时间来重建信任和连接",
+                    "TA可能需要看到你实质性的改变才会重新考虑",
+                    "挽回过程可能会有反复，需要保持耐心"
+                ],
+                steps: [
+                    "给自己1个月的自我提升期，专注于个人成长",
+                    "通过间接方式（如社交媒体）展示积极改变",
+                    "在2-3个月后，尝试以朋友身份重新建立联系",
+                    "逐渐增加互动，但不要急于推进关系",
+                    "在关系缓和后，诚恳地讨论过去的问题和解决方案"
+                ],
+                timeline: [
+                    "第1-4周：自我提升期 - 专注个人改变，不主动联系",
+                    "第5-8周：间接展示期 - 通过社交媒体展示积极变化",
+                    "第9-12周：重新连接期 - 以朋友身份开始互动",
+                    "第13-16周：关系评估期 - 评估TA的反应和关系进展"
+                ]
+            },
+            {
+                minScore: 40,
+                maxScore: 49,
+                name: "需努力挽回型",
+                desc: "挽回需要更多努力和时间，但并非没有机会。可能分手原因较为复杂，或感情受伤较深。需要从自我改变开始，逐步重建信任和吸引力。",
+                predictions: [
+                    "挽回过程可能需要3-6个月或更长时间",
+                    "TA需要看到你持续、真实的改变",
+                    "可能需要专业的情感指导来帮助挽回过程"
+                ],
+                steps: [
+                    "给自己2-3个月的自我重建期，彻底改变",
+                    "彻底断绝纠缠，给彼此真正的空间",
+                    "通过第三方或间接方式让TA了解到你的积极变化",
+                    "在3-4个月后，以全新的姿态尝试重新接触",
+                    "保持低期望，专注于自我成长而非结果"
+                ],
+                timeline: [
+                    "第1-8周：自我重建期 - 彻底改变，专注个人发展",
+                    "第9-12周：间接影响期 - 让TA间接了解你的改变",
+                    "第13-20周：重新接触期 - 尝试以全新身份建立联系",
+                    "第21-24周：关系评估期 - 根据反馈调整策略"
+                ]
+            }
+        ];
+
+        // 测试状态
+        let currentQuestion = 0;
+        let answers = [];
+        let selectedOption = null;
+        let totalScore = 0;
+
+        // DOM元素
+        const questionContainer = document.getElementById('questionContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const restartBtn = document.getElementById('restartBtn');
+
+        // 初始化测试
+        function initTest() {
+            showQuestion();
+            updateProgress();
+            setupEventListeners();
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            prevBtn.addEventListener('click', prevQuestion);
+            nextBtn.addEventListener('click', nextQuestion);
+            restartBtn.addEventListener('click', restartTest);
+        }
+
+        // 显示当前问题
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('questionText').textContent = question.text;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (answers[currentQuestion] === index) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.innerHTML = `
+                    <div class="option-letter">${letters[index]}</div>
+                    <div class="option-text">${option.text}</div>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(index, option.score));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // 更新按钮状态
+            prevBtn.style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+            
+            // 更新下一题按钮文本
+            const nextBtnText = currentQuestion === questions.length - 1 ? 
+                '查看结果 <i class="fas fa-heartbeat"></i>' : 
+                '下一题 <i class="fas fa-arrow-right"></i>';
+            nextBtn.innerHTML = nextBtnText;
+        }
+
+        // 选择选项
+        function selectOption(index, score) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            options[index].classList.add('selected');
+            
+            // 更新分数
+            const oldScore = answers[currentQuestion] !== undefined ? 
+                questions[currentQuestion].options[answers[currentQuestion]].score : 0;
+            
+            answers[currentQuestion] = index;
+            selectedOption = index;
+            
+            // 更新总分
+            totalScore = totalScore - oldScore + score;
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `${currentQuestion + 1}/${questions.length}`;
+        }
+
+        // 下一题
+        function nextQuestion() {
+            if (answers[currentQuestion] === undefined) {
+                alert('请先选择一个答案再继续！');
+                return;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                selectedOption = answers[currentQuestion] !== undefined ? answers[currentQuestion] : null;
+                showQuestion();
+                updateProgress();
+            } else {
+                // 显示结果
+                showResults();
+            }
+        }
+
+        // 上一题
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                selectedOption = answers[currentQuestion] !== undefined ? answers[currentQuestion] : null;
+                showQuestion();
+                updateProgress();
+            }
+        }
+
+        // 显示结果
+        function showResults() {
+            // 计算总分
+            let finalScore = 0;
+            answers.forEach((answerIndex, questionIndex) => {
+                if (answerIndex !== undefined) {
+                    finalScore += questions[questionIndex].options[answerIndex].score;
+                }
+            });
+            
+            // 确保最低分至少40分（偏向挽回）
+            if (finalScore < 40) {
+                finalScore = 40 + Math.floor(Math.random() * 5); // 40-45分
+            }
+            
+            // 确定结果类型
+            let resultType = resultTypes[0]; // 默认值
+            
+            for (const type of resultTypes) {
+                if (finalScore >= type.minScore && finalScore <= type.maxScore) {
+                    resultType = type;
+                    break;
+                }
+            }
+            
+            // 计算挽回可能性指数 (60%-90%)
+            // 将40-100分映射到60-90%
+            const minPossibleScore = 40;
+            const maxPossibleScore = 100;
+            const normalizedScore = (finalScore - minPossibleScore) / (maxPossibleScore - minPossibleScore);
+            const matchPercentage = 60 + Math.round(normalizedScore * 30); // 60-90%
+            
+            // 显示结果
+            questionContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            document.getElementById('matchPercentage').textContent = `${matchPercentage}%`;
+            document.getElementById('resultType').textContent = resultType.name;
+            document.getElementById('resultDesc').textContent = resultType.desc;
+            
+            // 更新预测列表
+            const predictionsList = document.getElementById('predictionsList');
+            predictionsList.innerHTML = '';
+            resultType.predictions.forEach(prediction => {
+                predictionsList.innerHTML += `
+                    <div class="prediction-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>${prediction}</div>
+                    </div>
+                `;
+            });
+            
+            // 更新步骤列表
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            resultType.steps.forEach(step => {
+                stepsList.innerHTML += `
+                    <div class="step-item">
+                        <div>${step}</div>
+                    </div>
+                `;
+            });
+            
+            // 更新时间线列表
+            const timelineList = document.getElementById('timelineList');
+            timelineList.innerHTML = '';
+            resultType.timeline.forEach(timeline => {
+                timelineList.innerHTML += `
+                    <div class="timeline-item">
+                        <i class="fas fa-calendar-week"></i>
+                        <div><strong>${timeline.split('：')[0]}：</strong> ${timeline.split('：')[1]}</div>
+                    </div>
+                `;
+            });
+            
+            // 更新分享链接
+            const shareText = `我的挽回可能性测试结果：${resultType.name}，挽回可能性${matchPercentage}%！快来测测你的挽回机会吧！`;
+            const shareUrl = window.location.href;
+            
+            document.getElementById('shareWhatsApp').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+            document.getElementById('shareWeChat').onclick = function() {
+                alert('请点击微信右上角分享按钮或复制链接发送给朋友~');
+                return false;
+            };
+            
+            // 复制链接功能
+            document.getElementById('copyLink').addEventListener('click', function() {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert('链接已复制！快去分享给朋友吧~');
+                });
+            });
+        }
+
+        // 重新开始测试
+        function restartTest() {
+            currentQuestion = 0;
+            answers = [];
+            selectedOption = null;
+            totalScore = 0;
+            
+            resultContainer.style.display = 'none';
+            questionContainer.style.display = 'block';
+            
+            initTest();
+        }
+
+        // 页面加载完成后初始化测试
+        document.addEventListener('DOMContentLoaded', initTest);
+    </script>
+</body>
+</html>
